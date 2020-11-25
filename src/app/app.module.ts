@@ -16,10 +16,14 @@ import {MatTableModule} from '@angular/material/table';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {MatSelectModule} from '@angular/material/select';
 import { HttpClientModule } from '@angular/common/http';
+import { AddPetComponent } from './components/add-pet/add-pet.component';
+import { MatNativeDateModule } from '@angular/material/core';
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    AddPetComponent
   ],
   imports: [
     BrowserModule,
@@ -32,7 +36,9 @@ import { HttpClientModule } from '@angular/common/http';
     MatButtonModule,
     MatCheckboxModule,
     MatDatepickerModule,
+    MatNativeDateModule,
     MatDialogModule,
+    MatSelectModule,
     MatFormFieldModule,
     MatToolbarModule,
     MatIconModule,

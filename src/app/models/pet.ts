@@ -8,14 +8,11 @@ export interface PetItem {
     color: string;
     situation: string;
     description: string;
-
-
     owner: string;
     phone1: string;
     phone2: string;
     dpi: string;
     address: string;
-
     admissionDate: string;
     doctor: string;
     departureDate: string;
