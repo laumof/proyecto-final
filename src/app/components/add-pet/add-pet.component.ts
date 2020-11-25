@@ -35,18 +35,8 @@ export class AddPetComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  public findInvalidControls(): any {
-    const invalid = [];
-    const controls = this.form.controls;
-    for (const name in controls) {
-        if (controls[name].invalid) {
-            invalid.push(name);
-        }
-    }
-    return invalid;
-}
+
   save(): void {
-    console.log(this.findInvalidControls());
     if (this.form.invalid) { return; }
     const newpet: PetItem = { ...this.form.value };
     this.petsService.savePet(newpet).subscribe(data => {
