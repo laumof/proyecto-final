@@ -1,0 +1,21 @@
+.app { height: 100vh; }
+.app-sm { height: calc(100vh - 64px); }
+
+/* General */
+.ma-0 { margin: 0 !important; }
+.cursor-pointer { cursor: pointer; }
+.text-muted { color: rgba(0,0,0,0.54); }
+
+
+/* APP LAYOUT */
+.relative { position: relative; }
+
+
+.ellipsis-text {
+    flex: 1;
+    &, & > * {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+}
