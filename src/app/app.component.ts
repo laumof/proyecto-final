@@ -5,7 +5,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import { AddPetComponent } from './components/add-pet/add-pet.component';
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { Apollo } from 'apollo-angular';
+import { Apollo, QueryRef } from 'apollo-angular';
 import gql from 'graphql-tag';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -13,19 +13,79 @@ interface Response {
   pets: PetItem[];
 }
 const GET_TASKS = gql`
-  query Tasks {
-    tasks {
-      admissionDate
-      owner
-      species
-      name
-      description
-      doctor
-      departureDate
+  query {
+    allPacientes {
+      edges{
+        node {
+          id,
+          name,
+          size,
+          species,
+          race,
+          age,
+          color,
+          situation,
+          description,
+          owner,
+          phone1,
+          phone2,
+          dpi,
+          address,
+          admissionDate,
+          doctor,
+          departureDate,
+          cost
+        }
+      }
+    }
+  }
+`;
+
+const ADD_PET = gql`
+  mutation AddPaciente {
+    insert_paciente(objects: {
+      id: "",
+      name: "",
+      size: "",
+      species: "",
+      race: "",
+      age: "",
+      color: "",
+      situation: "",
+      description: "",
+      owner: "",
+      phone1: "",
+      phone2: "",
+      dpi: "",
+      address: "",
+      admissionDate: "",
+      doctor: "",
+      departureDate: "",
+      cost: ""
+    })
+    returning {
+      id,
+      name,
+      size,
+      species,
+      race,
+      age,
+      color,
+      situation,
+      description,
+      owner,
+      phone1,
+      phone2,
+      dpi,
+      address,
+      admissionDate,
+      doctor,
+      departureDate,
       cost
     }
   }
 `;
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -35,14 +95,15 @@ export class AppComponent implements OnInit {
   pets: PetItem[];
   displayedColumns: string[] = ['admissionDate', 'owner', 'species', 'name', 'description', 'doctor', 'departureDate', 'cost'];
   dataSource = new MatTableDataSource();
-
+  queryRef: QueryRef<Response>;
   pets$: Observable<PetItem[]>;
   constructor(public petsService: PetsService, public dialog: MatDialog, public overlayContainer: OverlayContainer, private apollo: Apollo) {}
 
   ngOnInit(): void {
-    this.pets$ = this.apollo.watchQuery<Response>({
+    this.queryRef = this.apollo.watchQuery<Response>({
       query: GET_TASKS
-    }).valueChanges.pipe(
+    });
+    this.pets$ = this.queryRef.valueChanges.pipe(
       map(result => {
         this.pets = result.data.pets;
         this.dataSource = new MatTableDataSource(this.pets);
@@ -65,12 +126,22 @@ export class AppComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result !== undefined) {
-        if (result === true) {
-          this.petsService.getPets().subscribe(data => {
-            this.pets = data;
-            this.dataSource = new MatTableDataSource(this.pets);
-          });
-        }
+        this.apollo.mutate({
+          mutation: ADD_PET,
+          variables: result
+        }).subscribe(({ data }) => {
+          this.queryRef.refetch();
+          alert('Mascota agregada');
+        }, err => {
+          alert('Hubo un error al guardar el ingreso, intente de nuevo más tarde');
+
+        });
+        // if (result === true) {
+        //   this.petsService.getPets().subscribe(data => {
+        //     this.pets = data;
+        //     this.dataSource = new MatTableDataSource(this.pets);
+        //   });
+        // }
       }
     });
   }

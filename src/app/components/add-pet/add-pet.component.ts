@@ -39,11 +39,12 @@ export class AddPetComponent implements OnInit {
   save(): void {
     if (this.form.invalid) { return; }
     const newpet: PetItem = { ...this.form.value };
-    this.petsService.savePet(newpet).subscribe(data => {
-      this.dialogRef.close(true);
-    }, err => {
-      alert('Hubo un error al guardar el ingreso, intente de nuevo más tarde');
-    });
+    this.dialogRef.close(newpet);
+    // this.petsService.savePet(newpet).subscribe(data => {
+    //   this.dialogRef.close(true);
+    // }, err => {
+    //   alert('Hubo un error al guardar el ingreso, intente de nuevo más tarde');
+    // });
 
   }
 

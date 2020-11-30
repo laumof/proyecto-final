@@ -20,6 +20,7 @@ import {MatSelectModule} from '@angular/material/select';
 import { HttpClientModule } from '@angular/common/http';
 import { AddPetComponent } from './components/add-pet/add-pet.component';
 import { MatNativeDateModule } from '@angular/material/core';
+import { GraphQLModule } from './graphql.module';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,9 @@ import { MatNativeDateModule } from '@angular/material/core';
     MatToolbarModule,
     MatIconModule,
     MatInputModule,
-    MatTableModule
+    MatTableModule,
+    GraphQLModule,
+
   ],
   providers: [],
   bootstrap: [AppComponent]
