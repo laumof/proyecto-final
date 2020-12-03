@@ -14,10 +14,9 @@ interface Response {
 }
 const GET_TASKS = gql`
   query {
-    allPacientes {
+    pacientes {
       edges{
         node {
-          id,
           name,
           size,
           species,
@@ -94,21 +93,31 @@ export class AppComponent implements OnInit {
   pets: PetItem[];
   displayedColumns: string[] = ['admissionDate', 'owner', 'species', 'name', 'description', 'doctor', 'departureDate', 'cost'];
   dataSource = new MatTableDataSource();
-  queryRef: QueryRef<Response>;
+  queryRef: QueryRef<any>;
   pets$: Observable<PetItem[]>;
   constructor(public petsService: PetsService, public dialog: MatDialog, public overlayContainer: OverlayContainer, private apollo: Apollo) {}
 
   ngOnInit(): void {
-    this.queryRef = this.apollo.watchQuery<Response>({
+    this.queryRef = this.apollo.watchQuery<any>({
       query: GET_TASKS
     });
     this.pets$ = this.queryRef.valueChanges.pipe(
       map(result => {
-        this.pets = result.data.pets;
+        const data = result.data.pacientes.edges;
+        this.pets = [];
+        data.forEach(n => {
+          this.pets.push(n.node);
+        });
+        //this.dataSource = new MatTableDataSource(this.pets);
+        //this.pets = result.data.pacientes.edges;
         this.dataSource = new MatTableDataSource(this.pets);
+        console.log(result);
         return result.data.pets;
       })
     );
+    this.pets$.subscribe(data => {
+      console.log('wenas', data);
+    });
     // this.petsService.getPets().subscribe(data => {
     //   this.pets = data;
     //   this.dataSource = new MatTableDataSource(this.pets);
