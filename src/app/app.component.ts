@@ -42,47 +42,46 @@ const GET_TASKS = gql`
 `;
 
 const ADD_PET = gql`
-  mutation AddPaciente {
-    insert_paciente(objects: {
-      id: "",
-      name: "",
-      size: "",
-      species: "",
-      race: "",
-      age: "",
-      color: "",
-      situation: "",
-      description: "",
-      owner: "",
-      phone1: "",
-      phone2: "",
-      dpi: "",
-      address: "",
-      admissionDate: "",
-      doctor: "",
-      departureDate: "",
-      cost: ""
-    })
-    returning {
-      id,
-      name,
-      size,
-      species,
-      race,
-      age,
-      color,
-      situation,
-      description,
-      owner,
-      phone1,
-      phone2,
-      dpi,
-      address,
-      admissionDate,
-      doctor,
-      departureDate,
-      cost
-    }
+  mutation {
+    pacienteCreate (input: {
+      name: "Bonita",
+      size: "big",
+      species: "canine",
+      race: "minipinscher",
+      age: "13"
+      color: "Black and brown"
+      situation: "normal"
+      description: "active"
+      owner: "Laura Morales"
+      phone1: "41511333"
+      phone2: "41513787"
+      dpi: "2356898874512"
+      address: "Quetzaltenango"
+      admissionDate: "01 dic"
+      doctor: "Carrillo"
+      departureDate: "02 dic"
+      cost: "200"
+    }){
+          paciente {
+              name,
+              size,
+              species,
+              race,
+              age,
+              color,
+              situation,
+              description,
+              owner,
+              phone1,
+              phone2,
+              dpi,
+              address,
+              admissionDate,
+              doctor,
+              departureDate,
+              cost
+          }
+      }
   }
 `;
 
